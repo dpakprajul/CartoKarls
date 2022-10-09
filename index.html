@@ -1,167 +1,219 @@
-<!DOCTYPE html>
 <html>
+
 <head>
-<style>
-* {
-  box-sizing: border-box;
-}
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+	<script type='text/javascript' src='http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js?2'></script>
 
-body {
-  font-family: Arial;
-  padding: 10px;
-  background: #f1f1f1;
-}
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 
-/* Header/Blog Title */
-.header {
-  padding: 30px;
-  text-align: center;
-  background: white;
-}
-
-.header h1 {
-  font-size: 50px;
-}
-
-/* Style the top navigation bar */
-.topnav {
-  overflow: hidden;
-  background-color: #333;
-}
-
-/* Style the topnav links */
-.topnav a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-/* Change color on hover */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-/* Create two unequal columns that floats next to each other */
-/* Left column */
-.leftcolumn {   
-  float: left;
-  width: 75%;
-}
-
-/* Right column */
-.rightcolumn {
-  float: left;
-  width: 25%;
-  background-color: #f1f1f1;
-  padding-left: 20px;
-}
-
-/* Fake image */
-.fakeimg {
-  background-color: #aaa;
-  width: 100%;
-  padding: 20px;
-}
-
-/* Add a card effect for articles */
-.card {
-  background-color: white;
-  padding: 20px;
-  margin-top: 20px;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Footer */
-.footer {
-  padding: 20px;
-  text-align: center;
-  background: #ddd;
-  margin-top: 20px;
-}
-
-/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 800px) {
-  .leftcolumn, .rightcolumn {   
-    width: 100%;
-    padding: 0;
-  }
-}
-
-/* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
-@media screen and (max-width: 400px) {
-  .topnav a {
-    float: none;
-    width: 100%;
-  }
-}
-</style>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
+
 <body>
+	<div id="cover"></div>
+	<div id="base">
+		<div class="dropdown">
+			<p id="maptitle">Nepal Citizen Data<br />
+				<input type="text" id="admin" readonly>
+			</p>
+			<p id="subtitle">Status of population between 2003 and 2012</p>
+			<div id="work"><select name="var2" id="var2">
+					<option value="D01" selected="selected">Population Density (per sq. KM)</option>
+					<option value="D02">Male Population</option>
+					<option value="D03">Female Population</option>
+					<option value="D04">Median Age</option>
+					<option value="D05">Percent of Population Under 18</option>
+					<option value="D06">Percent White</option>
+					<option value="D07">Single Mother Households</option>
+					<option value="D08">Owner Vacancy Rate</option>
+					<option value="D09">Percent Rented Households</option>
+				</select></div><br />
+			<div id="try"><select name="var2" id="var2">
 
-<div class="header">
-  <h1>My Website</h1>
-  <p>Resize the browser window to see the effect.</p>
-  <link rel="shortcut icon" href="/favicon.ico" />
-</div>
+					<div id="scrollfield">
+						<table id="legend">
+							<tr>
+								<td>
+									<div
+										style="width:45px;height:30px;border:1px solid #fff;background-color:rgba(38, 92, 79,.7);">
+									</div>
+								</td>
+								<td><input type="text" id="leg7" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px;"></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<div
+										style="width:45px;height:30px;border:1px solid #fff;background-color:rgba(62, 114, 101,.7);">
+									</div>
+								</td>
+								<td><input type="text" id="leg6" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px;"></td>
+								<td><input type="text" id="leg17" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px; text-align: right;">
+								</td>
+								<td>
+									<div
+										style="width:30px;height:30px;border:1px solid #fff;background-color:rgba(7, 56, 0,.7);border-radius:30px">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div
+										style="width:45px;height:30px;border:1px solid #fff;background-color:rgba(79, 135, 122,.7);">
+									</div>
+								</td>
+								<td><input type="text" id="leg5" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px;"></td>
+								<td><input type="text" id="leg16" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px; text-align: right;">
+								</td>
+								<td>
+									<div
+										style="width:30px;height:30px;border:1px solid #fff;background-color:rgba(29, 77, 22,.7);border-radius:30px">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div
+										style="width:45px;height:30px;border:1px solid #fff;background-color:rgba(107, 163, 150,.7);">
+									</div>
+								</td>
+								<td><input type="text" id="leg4" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px;"></td>
+								<td><input type="text" id="leg15" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px; text-align: right;">
+								</td>
+								<td>
+									<div
+										style="width:30px;height:30px;border:1px solid #fff;background-color:rgba(44, 101, 35,.7);border-radius:30px">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div
+										style="width:45px;height:30px;border:1px solid #fff;background-color:rgba(137, 189, 177,.7);">
+									</div>
+								</td>
+								<td><input type="text" id="leg3" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px;"></td>
+								<td><input type="text" id="leg14" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px; text-align: right;">
+								</td>
+								<td>
+									<div
+										style="width:30px;height:30px;border:1px solid #fff;background-color:rgba(58, 126, 47,.7);border-radius:30px">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div
+										style="width:45px;height:30px;border:1px solid #fff;background-color:rgba(174, 208, 200,.7);">
+									</div>
+								</td>
+								<td><input type="text" id="leg2" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px;"></td>
+								<td><input type="text" id="leg13" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px; text-align: right;">
+								</td>
+								<td>
+									<div
+										style="width:30px;height:30px;border:1px solid #fff;background-color:rgba(83, 154, 72,.7);border-radius:30px">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div
+										style="width:45px;height:30px;border:1px solid #fff;background-color: rgba(203, 231, 225,.7);">
+									</div>
+								</td>
+								<td><input type="text" id="leg1" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969; width: 100px;"></td>
+								<td><input type="text" id="leg12" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px; text-align: right;">
+								</td>
+								<td>
+									<div
+										style="width:30px;height:30px;border:1px solid #fff;background-color:rgba(125, 189, 115,.7);border-radius:30px">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div
+										style="width:45px;height:30px;border:1px solid #aaa;background-color:rgba(255,255,255,0);">
+									</div>
+								</td>
+								<td><input type="text" id="leg0" value="No Data" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px;"></td>
+								<td><input type="text" id="leg11" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969; width: 105px; text-align: right;">
+								</td>
+								<td>
+									<div
+										style="width:30px;height:30px;border:1px solid #fff;background-color:rgba(154, 221, 144,.7);border-radius:30px">
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td><input type="text" id="leg00" value="No Data" readonly
+										style="border:0; background-color:#f6f6f6; color:#696969;width: 100px; text-align: right;">
+								</td>
+								<td>
+									<div
+										style="width:30px;height:30px;border:1px solid #aaa;background-color:rgba(255,255,255,0);border-radius:30px">
+									</div>
+								</td>
+							</tr>
 
-<div class="topnav">
-  <a href="#">Link</a>
-  <a href="#">Link</a>
-  <a href="#">Link</a>
-  <a href="#" style="float:right">Link</a>
-</div>
 
-<div class="row">
-  <div class="leftcolumn">
-    <div class="card">
-      <h2>TITLE HEADING</h2>
-      <h5>Title description, Dec 7, 2017</h5>
-      <div class="fakeimg" style="height:200px;">Image</div>
-      <p>Some text..</p>
-      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-    </div>
-    <div class="card">
-      <h2>TITLE HEADING</h2>
-      <h5>Title description, Sep 2, 2017</h5>
-      <div class="fakeimg" style="height:200px;">Image</div>
-      <p>Some text..</p>
-      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-    </div>
-  </div>
-  <div class="rightcolumn">
-    <div class="card">
-      <h2>About Me</h2>
-      <div class="fakeimg" style="height:100px;">Image</div>
-      <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
-    </div>
-    <div class="card">
-      <h3>Popular Post</h3>
-      <div class="fakeimg"><p>Image</p></div>
-      <div class="fakeimg"><p>Image</p></div>
-      <div class="fakeimg"><p>Image</p></div>
-    </div>
-    <div class="card">
-      <h3>Follow Me</h3>
-      <p>Some text..</p>
-    </div>
-  </div>
-</div>
 
-<div class="footer">
-  <h2>Footer</h2>
-</div>
+						</table>
+
+						<div id="sources">Deepak Parajuli | CartoMandu |<br /><i>Geodata:</i> US Census Tiger Shapefiles
+							2012; <i>Demographic Data:</i> US Census American Community Survey; US Department of
+							Education National Center for Education Statistics; Kansas State Department of Education
+						</div>
+					</div>
+			</div>
+
+		</div>
+	</div>
+	
+
+	<div class="slider" id="slide">
+		<p id="textbar">
+			<label style="border:0; background-color:#f6f6f6; color:#696969; font-weight:bold;" for="amount">School
+				Year: </label>
+			<input type="text" id="amount" readonly
+				style="border:0; background-color:#f6f6f6; color:#696969; font-weight:bold;">
+		</p>
+		<div class="bar">
+			<div class="slider" id="slider"></div>
+		</div>
+	</div>
+	<script src="js/school.js"></script>
+	<script src="js/tract.js"></script>
+	<script src="js/district.js"></script>
+	<script src="js/county.js"></script>
+	<script src="js/district2.js"></script>
+	<script src="js/county2.js"></script>
+	<script src="js/breaks.js"></script>
+	<script src="js/main.js"></script>
+	
 
 </body>
+
 </html>
-
-
