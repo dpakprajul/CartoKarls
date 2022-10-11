@@ -6,3 +6,7 @@ Self practise to get job-ready
 
 added data using jquery and break.js
 ![image](https://user-images.githubusercontent.com/38970123/194874461-ae904cab-22ae-4497-ba6f-adad30189d53.png)
+
+### geojson and option added
+![image](https://user-images.githubusercontent.com/38970123/195117709-367f71c8-7a42-472a-a190-c9e45ec20273.png)
+
