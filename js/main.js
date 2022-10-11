@@ -137,7 +137,7 @@ function onEachFeature(feature, layer) {
 		popup.setContent(feature.properties.NAMELSAD10 + "<br/>Students per School: " + Math.round(feature.properties[sch]));
 	}
 	layer.bindPopup(popup);
-	layer.on('click', function (e) {
+	layer.on('mouseover', function (e) {
 		this.openPopup();
 	});
 	layer.on('mouseout', function (e) {
