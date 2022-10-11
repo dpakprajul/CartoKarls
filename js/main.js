@@ -54,16 +54,36 @@ window.onload = function () {
         $('#var1').append(options.join("")).selectmenu("refresh");
     }
 
+  
     
+    function getColor1(d) {
+        return d < breaks[0] ? 'rgba(255,255,255,0)':
+                d < breaks[1]	? '#cbe7e1' :
+                d < breaks[2]	? '#aed0c8' :
+                d < breaks[3]	? '#89bdb1' :
+                d < breaks[4]	? '#6ba396' :
+                d < breaks[5]	? '#4f877a' :
+                d < breaks[6]	? '#3e7265' :
+                                '#265c4f' ;
+    }
 
-
+//define style of cloropleth
+function style(feature) {	
+    return {
+        fillColor: getColor1(feature.properties[cloro]),
+        weight: 1,
+        opacity: 1,
+        color: 'white',
+        fillOpacity: 0.7
+    };
+}
 
     //initialize layers
-    var a = L.geoJson(tract).addTo(map);
-    var b = L.geoJson(school).addTo(map);
-    var c = L.geoJson(district).addTo(map);
-    //var d = L.geoJson(county, { style: style }).addTo(map);
-    var e = L.geoJson(district2).addTo(map);
-    menuHandler(Cmenu, Ctext);
+    //var a = L.geoJson(tract).addTo(map);
+    //var b = L.geoJson(school).addTo(map);
+    //var c = L.geoJson(district, { style: style }).addTo(map);
+    var d = L.geoJson(county, { style: style }).addTo(map);
+    //var e = L.geoJson(district2).addTo(map);
+    //menuHandler(Cmenu, Ctext);
 }
 
