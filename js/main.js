@@ -1,7 +1,8 @@
 window.onload = function () {
-    var southWest = L.latLng(30, 87),
-        northEast = L.latLng(26, 87),
+    var southWest = L.latLng(37, -96.3),
+        northEast = L.latLng(40.8, -90.3),
         bounds = L.latLngBounds(southWest, northEast);
+
 
     //initialize map
     var map = L.map('base', { center: [39.0, -93.3], maxBounds: bounds, minZoom: 7, maxZoom: 13, zoom: 8 });
@@ -19,51 +20,50 @@ window.onload = function () {
 
     //select menu
     $(function () {
-        $("#var2").selectmenu({
-            change: function (event, ui) {
-                cloro = $("#var2").val(); //change cloropleth value
-                layerHandler();
-                if (cloro == "D02" || cloro == "D03" || cloro == "D05" || cloro == "D06" || cloro == "D07" || cloro == "D08" || cloro == "D09") {
-                    $("#leg1").val("Less than " + (Math.round(breaks[1] * 1000) / 10) + "%");
-                    $("#leg7").val((Math.round((breaks[6] + .001) * 1000) / 10) + " % or more");
-                    for (var i = 2; i < 7; i++) {
-                        $("#leg" + String(i)).val((Math.round((breaks[i - 1] + .001) * 1000) / 10) + " - " + (Math.round(breaks[i] * 1000) / 10) + "%");
-                    }
-                }
-               
-
-            }
-        }).selectmenu("menuWidget")
-            .addClass("overflow");
-        $("var1").selectmenu({
-            change: function (event, ui) {
-                circle = $("#var1").val(); // change circle marker value
-                layerHandler();
-                $("leg00").value("No Data");
-                if (Cbreaks == CwhStu || Cbreaks == ChiStu || Cbreaks == CblStu || Cbreaks == ThiStu || Cbreaks == TblStu || Cbreaks == TwhStu || Cbreaks == Tlunch) {
-                    $("#leg11").val("Less than " + (Math.round(Cbreaks[1] * 1000) / 10) + "%");
-                    $("#leg17").val((Math.round((Cbreaks[6] + .001) * 1000) / 10) + " % or more");
-                    for (var i = 2; i < 7; i++) {
-                        $("#leg1" + String(i)).val((Math.round((Cbreaks[i - 1] + .001) * 1000) / 10) + " - " + (Math.round((Cbreaks[i] * 1000) / 10)) + "%");
-                    }
-                }
-                
-    
-            }
-        }).selectmenu("menuWidget")
-            .addClass("overflow");
-
+        //for first rectangular legend 
         for (var i = 2; i < 7; i++) {
             $("#leg" + String(i)).val((Math.round((breaks[i - 1] + .001) * 1000) / 1000) + " - " + breaks[i]);
         }
+        //for second circular legend
         for (var i = 2; i < 7; i++) {
             $("#leg1" + String(i)).val((Math.round((Cbreaks[i - 1] + .001) * 1000) / 1000) + " - " + Cbreaks[i]);
         }
+        //for less than rectangular last legend
         $("#leg1").val("Less than " + breaks[1]);
-        $("#leg11").val("Less than " + Cbreaks[1]);
-        $("#leg7").val((Math.round((breaks[6] + .001) * 1000) / 1000) + " or more");
-        $("#leg17").val((Math.round((Cbreaks[6] + .001) * 1000) / 1000) + " or more");
+        $("#leg11").val("Less than " + Cbreaks[1]);  //for less than circular last legend
+        $("#leg7").val((Math.round((breaks[6] + .001) * 1000) / 1000) + " or more");  //for or more rectangular last legend
+        $("#leg17").val((Math.round((Cbreaks[6] + .001) * 1000) / 1000) + " or more"); //for or more circular last legend
 
     });
+    var Ctext = ["Percent White Students", "Percent Black Students", "Percent Hispanic Students"];
+    var Cmenu = ["whStu", "blStu", "hiStu"];
+    var Dtext = ["Percent Students Receiving Reduced or Free Lunch (KS only)", "Drop-out Rate (KS only)", "State Assessment Reading Score (KS only)", "State Assessment Math Score (KS only)", "Average Teacher Salary (KS only)", "Percent Expenditures towards Teacher Salary", "Private Monetary Contributions", "Total Revenue per Student", "Local Revenue per Student", "State Revenue per Student", "Federal Revenue per Student", "Student/Staff Ratio"];
+    var Dmenu = ["lunch", "drop", "read", "math", "salary", "pSalary", "priv", "tRev", "lRev", "sRev", "fRev", "PS"];
+    var Ttext = ["Percent White Students", "Percent Black Students", "Percent Hispanic Students", "Percent Students Receiving Reduced or Free Lunch"];
+    var Tmenu = ["whStu", "blStu", "hiStu", "lunch"];
+
+    function menuHandler(list, text) {
+        $("#var1 option").each(function (index, option) {
+            $(option).remove();
+        });
+        var options = [];
+        options.push("<option value='PT' selected = 'selected'>Student/Teachers Ratio</options>");  //default option displayed
+        for (i = 0; i < list.length; i++) {
+            options.push("<option value='" + list[i] + "'>" + text[i] + "</options>");
+        }
+        $('#var1').append(options.join("")).selectmenu("refresh");
+    }
+
+    
+
+
+
+    //initialize layers
+    var a = L.geoJson(tract).addTo(map);
+    var b = L.geoJson(school).addTo(map);
+    var c = L.geoJson(district).addTo(map);
+    //var d = L.geoJson(county, { style: style }).addTo(map);
+    var e = L.geoJson(district2).addTo(map);
+    menuHandler(Cmenu, Ctext);
 }
 
