@@ -66,6 +66,32 @@ window.onload = function () {
                 d < breaks[6]	? '#3e7265' :
                                 '#265c4f' ;
     }
+    function getColor2(x) {
+        switch (circle) {
+            case "title1": case "level":
+                return x == Cbreaks[0]	?	'#a6d854':
+                    x == Cbreaks[1]	?	'#fc8d62':
+                    x == Cbreaks[2]	?	'#377eb8':
+                    x == Cbreaks[3]	?	'#e78ac3':
+                    'rgba(255,255,255,0)';
+            break;
+            case "nonpub":
+                return x == 0	?	'rgba(255,255,255,0)':
+                    x == 1	?	'#d95f02':
+                    'rgba(255,255,255,0)';
+            break;
+            default:
+                return x < Cbreaks[0] ? 'rgba(255,255,255,0)':
+                    x < Cbreaks[1]	? '#9add90' :
+                    x < Cbreaks[2]	? '#7dbd73' :
+                    x < Cbreaks[3]	? '#539a48' :
+                    x < Cbreaks[4]	? '#3a7e2f' :
+                    x < Cbreaks[5]	? '#2c6523' :
+                    x < Cbreaks[6]	? '#1d4d16' :
+                    '#073800';
+            break;
+        }
+    }
 
 //define style of cloropleth
 function style(feature) {	
@@ -78,12 +104,56 @@ function style(feature) {
     };
 }
 
+//color circle
+function Cstyle(feature) {
+	switch (circle) {
+		case "level": case "title1": case "nonpub":
+			return{
+				fillColor: getColor2(feature.properties[circle]),
+				weight: 1,
+				color: 'white',
+				fillOpacity: 0.7
+			}
+		break;
+		default:
+			return{
+				fillColor: getColor2(feature.properties[schFill]),
+				weight: 1,
+				color: 'white',
+				fillOpacity: 0.7
+			}
+		break;
+	}
+}
+function onEachFeature(feature, layer) {
+	var popup = L.popup({closeButton: true, autoPan: false, className: 'popup'});
+	if (feature.properties && feature.properties.name) {
+		popup.setContent(feature.properties.name + "<br/>" + feature.properties.address + "<br/>Students: " + Math.round(feature.properties[stu]));
+	}
+	else if (feature.properties && feature.properties.NAME10) {
+		popup.setContent(feature.properties.NAME10 + "<br/>Students per School: " + Math.round(feature.properties[sch]));
+	}
+	else if (feature.properties && feature.properties.NAMELSAD10) {
+		popup.setContent(feature.properties.NAMELSAD10 + "<br/>Students per School: " + Math.round(feature.properties[sch]));
+	}
+	layer.bindPopup(popup);
+	layer.on('click', function (e) {
+		this.openPopup();
+	});
+	layer.on('mouseout', function (e) {
+		this.closePopup();
+	});
+}
+
     //initialize layers
     //var a = L.geoJson(tract).addTo(map);
     //var b = L.geoJson(school).addTo(map);
     //var c = L.geoJson(district, { style: style }).addTo(map);
     var d = L.geoJson(county, { style: style }).addTo(map);
     //var e = L.geoJson(district2).addTo(map);
+    var f = L.geoJson(county2, {pointToLayer: function (feature, latlng) {
+        return L.circle(latlng, (feature.properties[sch] * 30), Cstyle(feature));
+    }, onEachFeature:onEachFeature}).addTo(map);
     //menuHandler(Cmenu, Ctext);
 }
 
