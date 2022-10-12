@@ -1,23 +1,19 @@
 window.onload = function () {
   var southWest = L.latLng(37, -96.3),
-    northEast = L.latLng(40.8, -90.3),
-    bounds = L.latLngBounds(southWest, northEast);
+  northEast = L.latLng(40.8, -90.3),
+  bounds = L.latLngBounds(southWest, northEast);
+  
 
-  //initialize map
-  var map = L.map("base", {
-    center: [39.0, -93.3],
-    maxBounds: bounds,
-    minZoom: 6,
-    maxZoom: 13,
-    zoom: 8,
-  });
+//initialize map
+var map = L.map('base', {center: [39.0, -93.3], maxBounds: bounds, minZoom: 7, maxZoom: 13, zoom: 8});
 
-  //basemap definitions
-  L.tileLayer("http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png", {
-    maxZoom: 17,
-    minZoom: 3,
-  }).addTo(map);
-  L.control.scale().addTo(map);
+//basemap definition
+L.tileLayer( 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a> contributors | <a href="http://cartodb.com/attributions" title="CartoDB" target="_blank">CartoDB</a>',
+  subdomains: ['a','b','c','d','e','f']
+}).addTo(map); //add to map
+
+L.control.scale().addTo(map);
 
   //initialize variables displayed
   var stu = "student04";
@@ -419,4 +415,34 @@ window.onload = function () {
     }
     layerHandler();
   });
-};
+
+  $(function(){
+    $("#slider").slider({
+      value: 2004,
+      min: 2004,
+      max: 2012,
+      step: 1,
+      slide: function(event, ui) {
+        $("#amount").val(ui.value - 1 + " - " + ui.value);
+      }
+       
+      
+  }).each(function(){
+      var opt = $(this).data().uiSlider.options;
+      var vals = opt.min- opt.max;
+      for (var i = 0; i<=vals-1; i++){
+        var el = $('<label>'+(i+opt.min)+'</label>').css('left',(i/vals*100)+'%');
+        $("#slider").append(el);
+      }
+      
+});
+$( "#amount" ).val( $( "#slider" ).slider( "value" ) - 1 + " - " + $( "#slider" ).slider( "value" ));});
+//slider handler for time change
+$( "#slider" ).on( "slidechange", function( event, ui ) {
+	year = String( ui.value ).substr(2);
+	layerHandler();
+} );
+
+$("#slide").css("display", "initial")
+$("#cover").css("display", "none");
+}
