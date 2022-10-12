@@ -35,15 +35,73 @@ window.onload = function () {
 
   //select menu
   $(function () {
-    $("#var1")
-      .selectmenu({
-        change: function (event, ui) {
-          circle = $("#var1").val(); //change circle value
-          layerHandler();
-        },
-      })
-      .selectmenu("menuWidget")
-      .addClass("overflow");
+    $( "#var2" ).selectmenu({
+      change: function( event, ui ) {
+        cloro = $( "#var2" ).val(); //change cloropleth value
+        layerHandler();
+        if (cloro == "D02" || cloro == "D03" || cloro == "D05" || cloro == "D06" || cloro == "D07" || cloro == "D08" || cloro == "D09"){
+          $( "#leg1" ).val( "Less than " + (Math.round(breaks[1]*1000)/10) + "%" );
+          $( "#leg7" ).val( (Math.round((breaks[6] + .001)*1000)/10) + " % or more" );
+          for (var i = 2; i<7; i++){
+            $( "#leg" + String(i) ).val( (Math.round((breaks[i-1] + .001) * 1000)/10) + " - " + (Math.round(breaks[i]*1000)/10) + "%" );
+          }
+        }
+        else{
+          for (var i = 2; i<7; i++){
+            $( "#leg" + String(i) ).val( (Math.round((breaks[i-1] + .001) * 1000)/1000) + " - " + breaks[i]);
+          }
+          $( "#leg7" ).val( (Math.round((breaks[6] + .001) * 1000)/1000) + " or more" );
+          $( "#leg1" ).val( "Less than " + breaks[1] );
+        }
+      }
+    }).selectmenu( "menuWidget" ).addClass( "overflow" );
+
+    $( "#var1" ).selectmenu({
+      change: function( event, ui ) {
+        circle = $( "#var1" ).val(); //change circle value
+        layerHandler();
+        $( "#leg00" ).val( "No Data" );
+        if (Cbreaks == CwhStu || Cbreaks == ChiStu || Cbreaks == CblStu || Cbreaks == ThiStu || Cbreaks == TblStu || Cbreaks == TwhStu || Cbreaks == Tlunch){
+          $( "#leg11" ).val( "Less than " + (Math.round(Cbreaks[1]*1000)/10) + "%" );
+          $( "#leg17" ).val( (Math.round((Cbreaks[6] + .001)*1000)/10) + " % or more" );
+          for (var i = 2; i<7; i++){
+            $( "#leg1" + String(i) ).val( (Math.round((Cbreaks[i-1] + .001) * 1000)/10) + " - " + (Math.round((Cbreaks[i]*1000)/10)) + "%" );
+          }
+        }
+        else if (Cbreaks == DpSalary || Cbreaks == Ddrop || Cbreaks == Dlunch || Cbreaks == Dread || Cbreaks == Dmath){
+          $( "#leg11" ).val( "Less than " + (Math.round(Cbreaks[1]*100)/100) + "%" );
+          $( "#leg17" ).val( (Math.round((Cbreaks[6] + .001)*100)/100) + " % or more" );
+          for (var i = 2; i<7; i++){
+            $( "#leg1" + String(i) ).val( (Math.round((Cbreaks[i-1] + .001) * 100)/100) + " - " + (Math.round((Cbreaks[i]*100)/100)) + "%" );
+          }
+        }
+        else if ( Cbreaks == Dsalary || Cbreaks == DtRev || Cbreaks == DlRev || Cbreaks == DsRev || Cbreaks == DfRev){
+          $( "#leg11" ).val( "Less than $" + Math.round(Cbreaks[1]) );
+          $( "#leg17" ).val( "$" + Math.round(Cbreaks[6] + 1) + " or more" );
+          for (var i = 2; i<7; i++){
+            $( "#leg1" + String(i) ).val(  "$" + Math.round(Cbreaks[i-1] + 1) + " - " + (Math.round((Cbreaks[i]*100)/100)) );
+          }
+        }
+        else if (Cbreaks == Dpriv){
+          $( "#leg11" ).val( "$" + Math.round(Cbreaks[0] + 1) + " - " + (Math.round((Cbreaks[1]))) );
+          $( "#leg17" ).val( "$1,000,001 +" );
+          for (var i = 1; i<7; i++){
+            $( "#leg1" + String(i) ).val(  "Up to $" + (Math.round((Cbreaks[i]*100)/100)) );
+          }
+          $( "#leg00" ).val( "$0" );
+        }
+        else{
+          for (var i = 2; i<7; i++){
+            $( "#leg1" + String(i) ).val( (Math.round((Cbreaks[i-1] + .001) * 1000)/1000) + " - " + (Math.round(Cbreaks[i]*100)/100) );
+          }
+          $( "#leg11" ).val( "Less than " + Cbreaks[1] );
+          $( "#leg17" ).val( (Math.round((Cbreaks[6] + .001)*1000)/1000) + " or more" );
+        }
+      }
+    }).selectmenu( "menuWidget" ).addClass( "overflow" );
+
+
+   ;
     for (var i = 2; i < 7; i++) {
       $("#leg" + String(i)).val(
         Math.round((breaks[i - 1] + 0.001) * 1000) / 1000 + " - " + breaks[i]
