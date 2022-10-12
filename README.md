@@ -12,6 +12,6 @@ added data using jquery and break.js
 
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/38970123/195175671-cbcb84ee-89da-4eb2-a601-22d6cae378de.gif)
 
-###slider added
+### slider added
 ![image](https://user-images.githubusercontent.com/38970123/195421965-71c8a64a-7b95-4abd-8fd0-3af08caa9358.png)
 
