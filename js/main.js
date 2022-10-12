@@ -33,35 +33,6 @@ window.onload = function () {
 
   $("#admin").val("County Level");
 
-  //select menu
-  $(function () {
-    $("#var1")
-      .selectmenu({
-        change: function (event, ui) {
-          circle = $("#var1").val(); //change circle value
-          layerHandler();
-        },
-      })
-      .selectmenu("menuWidget")
-      .addClass("overflow");
-    for (var i = 2; i < 7; i++) {
-      $("#leg" + String(i)).val(
-        Math.round((breaks[i - 1] + 0.001) * 1000) / 1000 + " - " + breaks[i]
-      );
-    }
-    for (var i = 2; i < 7; i++) {
-      $("#leg1" + String(i)).val(
-        Math.round((Cbreaks[i - 1] + 0.001) * 1000) / 1000 + " - " + Cbreaks[i]
-      );
-    }
-    $("#leg1").val("Less than " + breaks[1]);
-    $("#leg11").val("Less than " + Cbreaks[1]);
-    $("#leg7").val(Math.round((breaks[6] + 0.001) * 1000) / 1000 + " or more");
-    $("#leg17").val(
-      Math.round((Cbreaks[6] + 0.001) * 1000) / 1000 + " or more"
-    );
-  });
-
   var Ctext = [
     "Percent White Students",
     "Percent Black Students",
@@ -72,10 +43,10 @@ window.onload = function () {
     "Percent Students Receiving Reduced or Free Lunch (KS only)",
     "Drop-out Rate (KS only)",
     "State Assessment Reading Score (KS only)",
-    "State Assessment Math Score (KS only)",
+    "State Assessment Math Scosfsdfre (KS only)",
     "Average Teacher Salary (KS only)",
     "Percent Expenditures towards Teacher Salary",
-    "Private Monetary Contributions",
+    "Private Monetarysfdsfdsf Contributions",
     "Total Revenue per Student",
     "Local Revenue per Student",
     "State Revenue per Student",
@@ -103,22 +74,6 @@ window.onload = function () {
     "Percent Students Receiving Reduced or Free Lunch",
   ];
   var Tmenu = ["whStu", "blStu", "hiStu", "lunch"];
-
-  function menuHandler(list, text) {
-    $("#var1 option").each(function (index, option) {
-      $(option).remove();
-    });
-    var options = [];
-    options.push(
-      "<option value='PT' selected = 'selected'>Student/Teacher Ratio</options>"
-    );
-    for (i = 0; i < list.length; i++) {
-      options.push("<option value='" + list[i] + "'>" + text[i] + "</options>");
-    }
-    $("#var1").append(options.join("")).selectmenu("refresh");
-  }
-
-  menuHandler(Cmenu, Ctext);
 
   function getColor1(d) {
     return d < breaks[0]
